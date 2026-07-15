@@ -339,6 +339,15 @@ class TestNormalizationMode:
         assert NormalizationMode.CUSTOM is not None
 
 
+class TestKeywordValidation:
+    """Tests for Keyword validation."""
+
+    def test_empty_keyword_raises_error(self) -> None:
+        """Verify empty text raises ValueError."""
+        with pytest.raises(ValueError, match="Keyword text cannot be empty"):
+            Keyword(text="", category=KeywordCategory.MALWARE)
+
+
 class TestInterfacesExist:
     """Tests to verify all interfaces are defined."""
 
