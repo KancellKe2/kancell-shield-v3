@@ -1,6 +1,7 @@
 """Unit tests for retry strategies."""
 
 import pytest
+from unittest import mock
 
 from src.search.models import RetryConfig, RetryMode
 from src.search.retry import (
@@ -43,10 +44,15 @@ class TestExponentialBackoffRetry:
         assert self.retry.should_retry(1, error) is False
 
     def test_backoff_delay_increases(self) -> None:
-        """Test backoff delay increases with attempts."""
-        delay1 = self.retry.get_backoff_delay(1)
-        delay2 = self.retry.get_backoff_delay(2)
+        """Test backoff delay increases with attempts using jitter-free retry."""
+        # Use a retry strategy without jitter for deterministic ordering test
+        retry_no_jitter = ExponentialBackoffRetry(RetryConfig(jitter=False))
+        delay1 = retry_no_jitter.get_backoff_delay(1)
+        delay2 = retry_no_jitter.get_backoff_delay(2)
+        # Without jitter, delays strictly increase
         assert delay2 > delay1
+        # Verify exponential growth base (2.0 is base for attempt 2)
+        assert abs(delay2 - delay1 * 2.0) < 0.001
 
     def test_backoff_delay_capped_at_max(self) -> None:
         """Test backoff delay is capped at max_delay."""
