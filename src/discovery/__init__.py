@@ -83,6 +83,46 @@ from .provider_selector import (
     SourceTypeSelector,
 )
 
+from .candidate_queue import (
+    CandidateQueue,
+    PriorityQueue,
+    BoundedPriorityQueue,
+    QueueEntry,
+)
+
+from .pipeline import (
+    PipelineContext,
+    PipelineResult,
+    PipelineStage,
+    CollectStage,
+    ValidateStage,
+    FilterStage,
+    ScoreStage,
+    EnqueueStage,
+    DiscoveryPipeline as CorePipeline,
+    FilteredPipeline,
+)
+
+from .state_manager import (
+    PipelineState,
+    StateSnapshot,
+    StateTransition,
+    StateManager,
+)
+
+from .metrics import (
+    MetricsSnapshot,
+    StageMetrics,
+    MetricsCollector,
+    DeterministicMetricsCollector,
+)
+
+from .orchestrator import (
+    DiscoveryOrchestrator,
+    StreamingOrchestrator,
+    BatchOrchestrator,
+)
+
 __all__ = [
     # Enums
     "CandidateStatus",
@@ -151,4 +191,34 @@ __all__ = [
     "RoundRobinSelector",
     "WeightedSelector",
     "SourceTypeSelector",
+    # Candidate Queue
+    "CandidateQueue",
+    "PriorityQueue",
+    "BoundedPriorityQueue",
+    "QueueEntry",
+    # Pipeline
+    "PipelineContext",
+    "PipelineResult",
+    "PipelineStage",
+    "CollectStage",
+    "ValidateStage",
+    "FilterStage",
+    "ScoreStage",
+    "EnqueueStage",
+    "CorePipeline",
+    "FilteredPipeline",
+    # State Management
+    "PipelineState",
+    "StateSnapshot",
+    "StateTransition",
+    "StateManager",
+    # Metrics
+    "MetricsSnapshot",
+    "StageMetrics",
+    "MetricsCollector",
+    "DeterministicMetricsCollector",
+    # Orchestrator
+    "DiscoveryOrchestrator",
+    "StreamingOrchestrator",
+    "BatchOrchestrator",
 ]
