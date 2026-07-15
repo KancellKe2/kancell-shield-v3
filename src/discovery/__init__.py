@@ -12,7 +12,6 @@ from .models import (
     DiscoveryProgress,
     DiscoveryResult,
     DiscoverySource,
-    DiscoverySource,
     DiscoveryStatistics,
     DiscoveryStatus,
     DiscoveryTask,
@@ -34,6 +33,27 @@ from .interfaces import (
     DiscoverySourceProvider,
     DiscoveryState,
 )
+
+from .exceptions import (
+    CollectorError,
+    ConfigurationError,
+    DiscoveryError,
+    FilterError,
+    MaxCandidatesReachedError,
+    SchedulerError,
+    ScorerError,
+    SourceNotFoundError,
+    StateError,
+    TaskNotFoundError,
+    ValidationError,
+)
+
+from .engine import DiscoveryEngineImpl
+from .scheduler import DiscoverySchedulerImpl, PriorityScheduler
+from .collector import DiscoveryCollectorImpl
+from .validator import DomainValidator
+from .filter import DomainFilter, ExclusionFilter, InclusionFilter
+from .scorer import DomainScorer, DeterministicScorer
 
 __all__ = [
     # Enums
@@ -63,4 +83,27 @@ __all__ = [
     "DiscoveryScheduler",
     "DiscoverySourceProvider",
     "DiscoveryState",
+    # Exceptions
+    "CollectorError",
+    "ConfigurationError",
+    "DiscoveryError",
+    "FilterError",
+    "MaxCandidatesReachedError",
+    "SchedulerError",
+    "ScorerError",
+    "SourceNotFoundError",
+    "StateError",
+    "TaskNotFoundError",
+    "ValidationError",
+    # Implementations
+    "DiscoveryEngineImpl",
+    "DiscoverySchedulerImpl",
+    "PriorityScheduler",
+    "DiscoveryCollectorImpl",
+    "DomainValidator",
+    "DomainFilter",
+    "ExclusionFilter",
+    "InclusionFilter",
+    "DomainScorer",
+    "DeterministicScorer",
 ]
