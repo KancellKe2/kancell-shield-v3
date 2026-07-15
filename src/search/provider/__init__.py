@@ -38,6 +38,56 @@ from .interfaces import (
     ProviderRegistry,
 )
 
+from .context import ProviderContext
+from .factory import MockProvider, ProviderFactoryImpl, ProviderRegistryImpl
+from .health import AggregatedHealthChecker, HealthMetrics, ProviderHealthCheckerImpl
+from .capabilities import (
+    CapabilityMatch,
+    CapabilityResolverImpl,
+    LenientCapabilityResolver,
+    StrictCapabilityResolver,
+)
+from .authentication import AuthState, MockAuthenticator, ProviderAuthenticatorImpl
+from .pagination import (
+    BatchPaginator,
+    CursorPaginator,
+    OffsetPaginator,
+    PagePaginator,
+    ProviderPaginatorImpl,
+)
+from .rate_limiter import (
+    FixedWindow,
+    GlobalRateLimiter,
+    ProviderRateLimiterImpl,
+    SlidingWindow,
+    TokenBucket,
+)
+from .exceptions import (
+    AuthenticationError,
+    BackoffRequiredError,
+    CapabilityError,
+    ConfigurationError,
+    ExpiredTokenError,
+    HealthCheckError,
+    InvalidCredentialsError,
+    NetworkError,
+    OAuthError,
+    PaginationError,
+    ParseError,
+    ProviderAlreadyRegisteredError,
+    ProviderError,
+    ProviderNotFoundError,
+    QuotaError,
+    QuotaExceededError,
+    RateLimitError,
+    RequestError,
+    ResponseError,
+    ServerError,
+    TimeoutError,
+    ValidationError,
+    VersionError,
+)
+
 __all__ = [
     # Enums
     "AuthMethod",
@@ -70,4 +120,54 @@ __all__ = [
     "ProviderPaginator",
     "ProviderRateLimiter",
     "ProviderRegistry",
+    # Implementations
+    "ProviderContext",
+    "ProviderFactoryImpl",
+    "ProviderRegistryImpl",
+    "ProviderHealthCheckerImpl",
+    "CapabilityResolverImpl",
+    "ProviderAuthenticatorImpl",
+    "ProviderPaginatorImpl",
+    "ProviderRateLimiterImpl",
+    # Additional classes
+    "MockProvider",
+    "MockAuthenticator",
+    "TokenBucket",
+    "SlidingWindow",
+    "FixedWindow",
+    "GlobalRateLimiter",
+    "AggregatedHealthChecker",
+    "StrictCapabilityResolver",
+    "LenientCapabilityResolver",
+    "BatchPaginator",
+    "OffsetPaginator",
+    "CursorPaginator",
+    "PagePaginator",
+    "AuthState",
+    "HealthMetrics",
+    "CapabilityMatch",
+    # Exceptions
+    "ProviderError",
+    "ConfigurationError",
+    "AuthenticationError",
+    "InvalidCredentialsError",
+    "ExpiredTokenError",
+    "OAuthError",
+    "RateLimitError",
+    "QuotaExceededError",
+    "BackoffRequiredError",
+    "RequestError",
+    "ValidationError",
+    "TimeoutError",
+    "NetworkError",
+    "ResponseError",
+    "ParseError",
+    "QuotaError",
+    "ServerError",
+    "ProviderNotFoundError",
+    "ProviderAlreadyRegisteredError",
+    "CapabilityError",
+    "HealthCheckError",
+    "PaginationError",
+    "VersionError",
 ]
