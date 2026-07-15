@@ -3,6 +3,13 @@
 import re
 from typing import Sequence
 
+from src.core.constants import (
+    MAX_DOMAIN_LENGTH,
+    MAX_LABEL_LENGTH,
+    MIN_DOMAIN_LENGTH,
+    RESERVED_TLDS as CORE_RESERVED_TLDS,
+)
+
 from .interfaces import CandidateValidator
 from .models import (
     CandidateStatus,
@@ -19,7 +26,7 @@ RESERVED_TLDS = frozenset({
     "example",
     "invalid",
     "test",
-})
+}).union(CORE_RESERVED_TLDS)
 
 # Reserved domain names
 RESERVED_DOMAINS = frozenset({
@@ -28,15 +35,6 @@ RESERVED_DOMAINS = frozenset({
     "example.net",
     "localhost.localdomain",
 })
-
-# Maximum domain length (per RFC 1035)
-MAX_DOMAIN_LENGTH = 253
-
-# Maximum label length (per RFC 1035)
-MAX_LABEL_LENGTH = 63
-
-# Minimum domain length (at least one char + TLD)
-MIN_DOMAIN_LENGTH = 3
 
 
 class DomainValidator(CandidateValidator):
