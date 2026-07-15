@@ -5,7 +5,6 @@ and interface existence. No implementation tests are included.
 """
 
 import pytest
-from typing import get_protocol_members
 
 from src.keyword.models import (
     DeduplicationMode,
