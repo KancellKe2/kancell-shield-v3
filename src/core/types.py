@@ -130,6 +130,79 @@ EventData = Dict[str, Any]
 EventList = List[Any]
 
 
+# Provider data classes (for concrete implementations)
+class ProviderRequest:
+    """Provider request data class."""
+
+    def __init__(
+        self,
+        query: str,
+        page: int = 1,
+        page_size: int = 10,
+    ) -> None:
+        self.query = query
+        self.page = page
+        self.page_size = page_size
+
+
+class ProviderResponse:
+    """Provider response data class."""
+
+    def __init__(
+        self,
+        results: Tuple[Any, ...],
+        total_count: int = 0,
+        page: int = 1,
+        has_more: bool = False,
+    ) -> None:
+        self.results = results
+        self.total_count = total_count
+        self.page = page
+        self.has_more = has_more
+
+
+class ProviderHealthStatus:
+    """Provider health status data class."""
+
+    def __init__(
+        self,
+        is_healthy: bool = True,
+        latency_ms: float = 0.0,
+        error_message: Optional[str] = None,
+    ) -> None:
+        self.is_healthy = is_healthy
+        self.latency_ms = latency_ms
+        self.error_message = error_message
+
+
+class ProviderCapabilities:
+    """Provider capabilities data class."""
+
+    def __init__(
+        self,
+        supports_pagination: bool = True,
+        supports_filters: bool = False,
+        max_page_size: int = 100,
+    ) -> None:
+        self.supports_pagination = supports_pagination
+        self.supports_filters = supports_filters
+        self.max_page_size = max_page_size
+
+
+class ProviderFeatureFlags:
+    """Provider feature flags data class."""
+
+    def __init__(
+        self,
+        enable_cache: bool = False,
+        enable_retry: bool = True,
+        enable_rate_limit: bool = True,
+    ) -> None:
+        self.enable_cache = enable_cache
+        self.enable_retry = enable_retry
+        self.enable_rate_limit = enable_rate_limit
+
+
 # Protocol definitions for structural typing
 
 class DiscoveryTask:

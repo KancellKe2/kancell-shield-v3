@@ -2,6 +2,9 @@
 
 This module provides adapters that translate between the search provider
 SDK and the discovery engine interfaces.
+
+Note: This module uses abstract protocols from core.types for provider types
+to avoid direct dependency on search.provider implementation.
 """
 
 from typing import Sequence
@@ -13,14 +16,13 @@ from .models import (
 )
 from .interfaces import DiscoveryCollector
 
-# Import search provider SDK models
-from src.search.provider.models import (
+# Import core types for abstract interfaces
+from src.core.types import (
     ProviderRequest,
     ProviderResponse,
     ProviderHealthStatus,
     ProviderCapabilities,
     ProviderFeatureFlags,
-    HealthStatus,
 )
 
 
@@ -85,7 +87,8 @@ class ProviderAdapter:
         query = " ".join(domains)
         return ProviderRequest(
             query=query,
-            custom_params=dict(kwargs) if kwargs else None,
+            page=kwargs.get("page", 1),
+            page_size=kwargs.get("page_size", 10),
         )
 
     def to_discovery_candidates(
@@ -163,12 +166,7 @@ class ProviderAdapter:
         """
         if health_status is None:
             return False
-
-        if health_status.status == HealthStatus.HEALTHY:
-            return True
-        if health_status.status == HealthStatus.DEGRADED:
-            return health_status.is_available
-        return False
+        return health_status.is_healthy
 
     def get_capabilities(self) -> ProviderCapabilities:
         """Get provider capabilities.
@@ -176,7 +174,11 @@ class ProviderAdapter:
         Returns:
             Provider capabilities.
         """
-        return ProviderCapabilities()
+        return ProviderCapabilities(
+            supports_pagination=True,
+            supports_filters=False,
+            max_page_size=100,
+        )
 
 
 class MockSearchProviderAdapter(ProviderAdapter):
@@ -243,6 +245,8 @@ class MockSearchProviderAdapter(ProviderAdapter):
         return ProviderResponse(
             results=tuple(results),
             total_count=len(results),
+            page=1,
+            has_more=False,
         )
 
     def set_mock_domains(self, domains: Sequence[str]) -> None:
@@ -333,11 +337,11 @@ class ProviderCapabilityAdapter:
             True if feature is supported.
         """
         feature_checks = {
-            "search": capabilities.supports_search,
-            "autocomplete": capabilities.supports_autocomplete,
+            "search": True,
+            "autocomplete": False,
             "pagination": capabilities.supports_pagination,
-            "filtering": capabilities.supports_filtering,
-            "safe_search": capabilities.supports_safe_search,
+            "filtering": capabilities.supports_filters,
+            "safe_search": False,
         }
 
         return feature_checks.get(feature, False)
@@ -402,10 +406,9 @@ class ProviderHealthAdapter:
         # Update health state if threshold exceeded
         if count >= self._failure_threshold:
             self._health_states[provider_name] = ProviderHealthStatus(
-                provider_name=provider_name,
-                status=HealthStatus.UNHEALTHY,
-                is_available=False,
-                consecutive_failures=count,
+                is_healthy=False,
+                latency_ms=0.0,
+                error_message=f"Exceeded failure threshold ({count})",
             )
 
     def set_failure_threshold(self, threshold: int) -> None:
@@ -429,7 +432,7 @@ class ProviderHealthAdapter:
         if status is None:
             return True  # Unknown status means available
 
-        return status.is_available
+        return status.is_healthy
 
     def get_unavailable_providers(self) -> list[str]:
         """Get list of unavailable providers.
@@ -440,7 +443,7 @@ class ProviderHealthAdapter:
         return [
             name
             for name, status in self._health_states.items()
-            if not status.is_available
+            if not status.is_healthy
         ]
 
     def reset_provider(self, provider_name: str) -> None:

@@ -9,39 +9,12 @@ from datetime import datetime, timezone
 from enum import Enum, auto
 from typing import FrozenSet
 
-
-class DiscoveryStatus(Enum):
-    """Status of a discovery operation."""
-
-    PENDING = auto()
-    RUNNING = auto()
-    PAUSED = auto()
-    COMPLETED = auto()
-    FAILED = auto()
-    CANCELLED = auto()
-
-
-class SourceType(Enum):
-    """Types of discovery sources."""
-
-    PASSIVE = auto()
-    ACTIVE = auto()
-    WHOIS = auto()
-    DNS = auto()
-    CERTIFICATE_TRANSPARENCY = auto()
-    PASSIVE_DNS = auto()
-    CUSTOM = auto()
-
-
-class CandidateStatus(Enum):
-    """Status of a discovery candidate."""
-
-    DISCOVERED = auto()
-    VALIDATED = auto()
-    SCORED = auto()
-    FILTERED = auto()
-    REJECTED = auto()
-    DUPLICATE = auto()
+# Import core enums to maintain backward compatibility
+from src.core import (
+    CandidateStatus,
+    DiscoveryStatus,
+    SourceType,
+)
 
 
 class ValidationResult(Enum):

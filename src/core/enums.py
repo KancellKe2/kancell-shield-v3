@@ -192,3 +192,41 @@ class ScoreLevel(str, Enum):
             ScoreLevel.CRITICAL: 1.0,
         }
         return weights.get(self, 0.0)
+
+
+class SourceType(str, Enum):
+    """Types of discovery sources."""
+
+    PASSIVE = "passive"
+    ACTIVE = "active"
+    WHOIS = "whois"
+    DNS = "dns"
+    CERTIFICATE_TRANSPARENCY = "certificate_transparency"
+    PASSIVE_DNS = "passive_dns"
+    CUSTOM = "custom"
+
+    @property
+    def is_passive(self) -> bool:
+        """Check if source is passive.
+
+        Returns:
+            True if passive source.
+        """
+        return self in (
+            SourceType.PASSIVE,
+            SourceType.CERTIFICATE_TRANSPARENCY,
+            SourceType.PASSIVE_DNS,
+        )
+
+    @property
+    def is_active(self) -> bool:
+        """Check if source is active.
+
+        Returns:
+            True if active source.
+        """
+        return self in (
+            SourceType.ACTIVE,
+            SourceType.WHOIS,
+            SourceType.DNS,
+        )

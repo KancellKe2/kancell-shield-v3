@@ -2,10 +2,14 @@
 
 import pytest
 
+from src.core import SourceType
+from src.core.types import (
+    ProviderHealthStatus,
+    ProviderCapabilities,
+)
 from src.discovery import (
     DiscoveryTask,
     Domain,
-    SourceType,
 )
 from src.discovery.provider_adapter import (
     MockSearchProviderAdapter,
@@ -69,17 +73,17 @@ class TestProviderAdapter:
 
     def test_check_health(self) -> None:
         """Test health checking."""
-        from src.search.provider.models import ProviderHealthStatus, HealthStatus
-
         healthy = ProviderHealthStatus(
-            provider_name="test",
-            status=HealthStatus.HEALTHY,
+            is_healthy=True,
+            latency_ms=100.0,
+            error_message=None,
         )
         assert self.adapter.check_health(healthy) is True
 
         unhealthy = ProviderHealthStatus(
-            provider_name="test",
-            status=HealthStatus.UNHEALTHY,
+            is_healthy=False,
+            latency_ms=0.0,
+            error_message="Service unavailable",
         )
         assert self.adapter.check_health(unhealthy) is False
 
@@ -166,12 +170,10 @@ class TestProviderHealthAdapter:
 
     def test_get_unavailable_providers(self) -> None:
         """Test getting unavailable providers."""
-        from src.search.provider.models import ProviderHealthStatus, HealthStatus
-
         status = ProviderHealthStatus(
-            provider_name="unhealthy",
-            status=HealthStatus.UNHEALTHY,
-            is_available=False,
+            is_healthy=False,
+            latency_ms=0.0,
+            error_message="Service unavailable",
         )
         self.adapter.set_health_status("unhealthy", status)
         unavailable = self.adapter.get_unavailable_providers()
