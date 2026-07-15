@@ -55,6 +55,34 @@ from .validator import DomainValidator
 from .filter import DomainFilter, ExclusionFilter, InclusionFilter
 from .scorer import DomainScorer, DeterministicScorer
 
+from .provider_adapter import (
+    ProviderAdapter,
+    MockSearchProviderAdapter,
+    ProviderCapabilityAdapter,
+    ProviderHealthAdapter,
+)
+
+from .provider_registry import (
+    ProviderRegistry,
+    DefaultProviderRegistry,
+    ProviderConfig,
+    ProviderRegistryBuilder,
+)
+
+from .provider_pipeline import (
+    ProviderPipeline,
+    FilteredProviderPipeline,
+    FallbackProviderPipeline,
+    BatchedProviderPipeline,
+)
+
+from .provider_selector import (
+    ProviderSelector,
+    RoundRobinSelector,
+    WeightedSelector,
+    SourceTypeSelector,
+)
+
 __all__ = [
     # Enums
     "CandidateStatus",
@@ -95,7 +123,7 @@ __all__ = [
     "StateError",
     "TaskNotFoundError",
     "ValidationError",
-    # Implementations
+    # Core Implementations
     "DiscoveryEngineImpl",
     "DiscoverySchedulerImpl",
     "PriorityScheduler",
@@ -106,4 +134,21 @@ __all__ = [
     "InclusionFilter",
     "DomainScorer",
     "DeterministicScorer",
+    # Provider Integration
+    "ProviderAdapter",
+    "MockSearchProviderAdapter",
+    "ProviderCapabilityAdapter",
+    "ProviderHealthAdapter",
+    "ProviderRegistry",
+    "DefaultProviderRegistry",
+    "ProviderConfig",
+    "ProviderRegistryBuilder",
+    "ProviderPipeline",
+    "FilteredProviderPipeline",
+    "FallbackProviderPipeline",
+    "BatchedProviderPipeline",
+    "ProviderSelector",
+    "RoundRobinSelector",
+    "WeightedSelector",
+    "SourceTypeSelector",
 ]
