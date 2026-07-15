@@ -11,6 +11,7 @@ from typing import Protocol, Sequence
 from .models import (
     AuthMethod,
     PaginationState,
+    PaginationType,
     ProviderAuthentication,
     ProviderCapabilities,
     ProviderConfiguration,
